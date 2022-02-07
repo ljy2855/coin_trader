@@ -1,30 +1,38 @@
+import pyupbit
 import time
-import requests
-from urllib import parse
-from threading import Timer, Thread, Event
-repeat_time = 2
+from threading import Timer 
 
-class BitCoinAPI:
+market_code = "KRW-BTC"
 
+class RepeatTimer(Timer):  
+    def run(self):  
+        while not self.finished.wait(self.interval):  
+            self.function(*self.args,**self.kwargs)  
+
+class BitCoinAPI():
+    
     def __init__(self):
-        self.market_code = "KRW-BTC"
-        self.base_url = "https://api.upbit.com/v1"
-        self.stopFlag = Event()
-        self.parse_thread = Timer(1, self.getCurrentTicker)
+        self.bit_data = pyupbit.get_ohlcv(market_code,interval="minute1", count=100)
+        self.price = pyupbit.get_current_price(market_code) 
+        self.thread = RepeatTimer(2,self.updatePrice)
+        
+        
+    def startUpdatePrice(self):
+        self.thread.start()
+        
+    def updatePrice(self):
+        self.price = pyupbit.get_current_price(market_code) 
+        print(self.price)
+    
+    def getPrice(self):
+        return self.price
 
 
-    def startParse(self):
-
-        self.parse_thread.start()
-
-    def getCurrentTicker(self):
-        headers = {"Accept": "application/json"}
-        url = parse.urljoin(self.base_url, '/ticker?markets=' + self.market_code)
-        response = requests.request("GET", url, headers=headers)
-
-
-if __name__ == "__main__":
-    bit = BitCoinAPI()
-    bit.startParse()
-
-    time.sleep(10)
+if __name__ == '__main__':
+    try:
+        bit = BitCoinAPI()
+        print(bit.bit_data)
+        bit.startUpdatePrice()
+        time.sleep(100)
+    except KeyboardInterrupt:
+        pass
