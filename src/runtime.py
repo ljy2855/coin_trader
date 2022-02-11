@@ -1,7 +1,8 @@
-import websockets
+import websockets 
 import asyncio
 import json
-
+from pyupbit import WebSocketManager
+'''
 async def upbit_ws_clinet():
     uri = "wss://api.upbit.com/websocket/v1"
     
@@ -18,12 +19,17 @@ async def upbit_ws_clinet():
         subscribe_data = json.dumps(subscribe_fmt)
         await websocket.send(subscribe_data)
         
-        while Ture:
+        while True:
             data = await websocket.recv()
             data = json.loads(data)
             print(data)
             
 async def main():
     await upbit_ws_clinet()
-
-asyncio.run(main())
+'''
+if __name__ == '__main__':
+    wm = WebSocketManager("ticker", ["KRW-BTC"])
+    while True:
+        data = wm.get()
+        print(data)
+        recv = data
