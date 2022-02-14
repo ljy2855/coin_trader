@@ -50,16 +50,23 @@ class RealtimePrice(Thread):
 
     def manageDataFrame(self, data):
 
+        # pyupbit lib edited for optimization
+        #trading_price = data['trading_price']
+        #trading_volume = data['trading_volume']
+        #timestamp = data['timestamp'] / 1000
+
         trading_price = data['tp']
         trading_volume = data['tv']
         timestamp = data['tms'] / 1000
-        if self.start_time == None:
+
+        if self.start_time == None:  # init
             self.start_time = timestamp
             self.minute_ticker = []
             self.volume = 0
         else:
-            if self.start_time + 60 <= timestamp:  # 60초마다 ndarray 형태로 가격 저장
-                self.data_dict[timestamp] = np.array(self.minute_ticker)
+            if self.start_time + 10 <= timestamp:  # 60초마다 price,volume 저장
+                self.data_dict.update({timestamp: {'prices': np.array(self.minute_ticker),
+                                                   'volume': self.volume}})
                 self.start_time = timestamp
                 print(self.data_dict)
                 self.minute_ticker = []
