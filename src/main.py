@@ -9,6 +9,17 @@ from threading import Thread
 market_code = "KRW-BTC"
 
 
+
+# class Buyer():
+#     def __init__(self):
+
+#     def getUserInfo(self):
+
+#     def callBuyOrder(self):
+
+#     def callSellOrder(self):
+
+
 class BitCoinAPI():
     def __init__(self):
         self.real_time_thread = RealtimePrice()
@@ -64,7 +75,7 @@ class RealtimePrice(Thread):
             self.minute_ticker = []
             self.volume = 0
         else:
-            if self.start_time + 10 <= timestamp:  # 60초마다 price,volume 저장
+            if self.start_time + 60 <= timestamp:  # 60초마다 price,volume 저장
                 self.data_dict.update({timestamp: {'prices': np.array(self.minute_ticker),
                                                    'volume': self.volume}})
                 self.start_time = timestamp
