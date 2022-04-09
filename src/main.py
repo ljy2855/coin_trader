@@ -1,6 +1,6 @@
 import time
 
-from module.BitCoinAPI import BitCoinAPI
+from module.bitCoinApi import BitCoinAPI
 
 
 if __name__ == '__main__':

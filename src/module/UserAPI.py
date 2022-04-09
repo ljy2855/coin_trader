@@ -1,5 +1,5 @@
 import time
-from AuthHeader import getAuthHeader, getTradeHeader
+from authHeader import getAuthHeader, getTradeHeader
 import requests
 from collections import deque
 

@@ -1,6 +1,6 @@
-from module.RealtimePricePaser import RealtimePrice
+from module.realtimeTickerParser import RealtimePrice
 import pyupbit
-from module.RealtimePricePaser import market_code
+from module.realtimeTickerParser import market_code
 
 
 class BitCoinAPI():
